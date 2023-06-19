@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
+import { redirect } from "react-router-dom";
 
 const Container = styled.div`
   height: 60px;
@@ -72,6 +74,19 @@ const MenuItem = styled.div`
 const Navbar = () => {
   const quantity = useSelector(state=>state.cart.quantity);
   const user = useSelector((state) => state.user.currentUser);
+  const history = useHistory();
+
+
+  const checkout = () => {
+    try {
+      localStorage.removeItem("persist:root");
+      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    } catch (error) {
+      console.log(error);
+    }  
+
+
+  }
 
   return (
     <Container>
@@ -89,6 +104,7 @@ const Navbar = () => {
           <MenuItem>CADASTRE-SE</MenuItem>
         </Link>}
         {user?.username}
+        {user && <MenuItem onClick={checkout}>SAIR</MenuItem>}
           <Link to="/cart">
           <MenuItem>
             <Badge badgeContent={quantity} color="primary">

@@ -263,8 +263,8 @@ const Cart = () => {
               <SummaryItemPrice>{cart.total}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
-              name="CubeUp"
-              image="https://avatars.githubusercontent.com/u/1486366?v=4"
+              name="PENAPP"
+              image="https://img.freepik.com/fotos-premium/linda-caneta-tinteiro_309761-528.jpg"
               description={`Your total is $${cart.total}`}
               amount={cart.total * 100}
               token={onToken}
