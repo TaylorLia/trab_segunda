@@ -45,9 +45,9 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 50%;
+  width: 40%;
   border: none;
-  padding: 10px 10px;
+  padding: 15px 20px;
   background-color: #545454;
   color: white;
   cursor: pointer;
@@ -77,22 +77,23 @@ const AddProducts = () => {
         <Title>Adicionar Produto</Title>
         <Form>
           <Input 
-            placeholder="Nome do produto"
+            placeholder="Nome de Usuario"
             // onChange={(e) => setUsername(e.target.value)} 
             />
           <Input
-            placeholder="Descrição do produto"
-            // onChange={(e) => setPassword(e.target.value)} 
-            />
-                      <Input
-            placeholder="Preço"
-            type="number"
+            placeholder="senha"
+            type="password"
             // onChange={(e) => setPassword(e.target.value)} 
             />
           <Button disabled={false}>
-            Cadastrar produto
+            LOGIN
           </Button>
         </Form>
+        <Link_a>
+          <Link to="/register">
+            Crie uma conta
+          </Link>
+        </Link_a>
       </Wrapper>
     </Container>
   );

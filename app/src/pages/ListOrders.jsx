@@ -4,7 +4,6 @@ import {mobile} from "../responsive";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Product from "../components/Product";
 
 const Container = styled.div`
   width: 100%;
@@ -73,16 +72,20 @@ const AddProducts = () => {
         <Title>Listagem de pedidos</Title>
         <Form>
            { [1,2,3,4,5,6,7,8,9,10,11,12,13].map((item) => (
-                <Wrapper>
-                  {item}
-                  <Wrapper>
-                    {item}
-                    <p>{item}</p>
-                    <p>{item}</p>
-                  </Wrapper>
-                </Wrapper>
+                <Input 
+                placeholder="Nome de Usuario"
+                // onChange={(e) => setUsername(e.target.value)} 
+                />
             )) }
+          <Button disabled={false}>
+            LOGIN
+          </Button>
         </Form>
+        <Link_a>
+          <Link to="/register">
+            Crie uma conta
+          </Link>
+        </Link_a>
       </Wrapper>
     </Container>
   );
