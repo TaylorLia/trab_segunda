@@ -69,7 +69,8 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
-  const quantity = useSelector(state=>state.cart.quantity)
+  const quantity = useSelector(state=>state.cart.quantity);
+  const user = useSelector((state) => state.user.currentUser);
 
   return (
     <Container>
@@ -80,12 +81,13 @@ const Navbar = () => {
           <Logo>PENAPP!</Logo>
         </Center>
         <Right>
-        <Link to="/login">
+        {!user && <Link to="/login">
           <MenuItem>ENTRE</MenuItem>
-        </Link>
-        <Link to="/register">
+        </Link> }
+        {!user && <Link to="/register">
           <MenuItem>CADASTRE-SE</MenuItem>
-        </Link>
+        </Link>}
+        {user?.username}
           <Link to="/cart">
           <MenuItem>
             <Badge badgeContent={quantity} color="primary">
