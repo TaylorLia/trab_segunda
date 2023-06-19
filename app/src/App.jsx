@@ -5,6 +5,8 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Success from "./pages/Success";
+import AddProducts from "./pages/AddProducts"
+import ListOrders from "./pages/ListOrders"
 import { useSelector } from "react-redux";
 
 import {
@@ -30,6 +32,12 @@ const App = () => {
         </Route>
         <Route path="/cart">
           <Cart />
+        </Route>
+        <Route path="/addproducts">
+          <AddProducts />
+        </Route>
+        <Route path="/listorders">
+          <ListOrders />
         </Route>
         <Route path="/success">
           <Success />

@@ -90,8 +90,8 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-        {user?.isAdmin && <MenuItem>Cadastrar produto</MenuItem> } 
-        {user?.isAdmin && <MenuItem>Listagem de pedidos</MenuItem> }
+        {user?.isAdmin && <Link to="/addproducts"> <MenuItem>Cadastrar produto</MenuItem></Link>} 
+        {user?.isAdmin && <Link to="/listorders"><MenuItem>Listagem de pedidos</MenuItem></Link> }
         </Left>
         <Center>
           <Logo>PENAPP!</Logo>
