@@ -80,8 +80,12 @@ const Navbar = () => {
           <Logo>PENAPP!</Logo>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+        <Link to="/login">
+          <MenuItem>ENTRE</MenuItem>
+        </Link>
+        <Link to="/register">
+          <MenuItem>CADASTRE-SE</MenuItem>
+        </Link>
           <Link to="/cart">
           <MenuItem>
             <Badge badgeContent={quantity} color="primary">
