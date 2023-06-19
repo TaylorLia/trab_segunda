@@ -49,7 +49,7 @@ const Link_a = styled.a`
 
 const TopButton = styled.button`
   padding: 10px;
-  margin: 20px;
+  margin-left : 20px;
   font-weight: 500;
   cursor: pointer;
   border: ${(props) => props.type === "filled" && "none"};
@@ -57,7 +57,9 @@ const TopButton = styled.button`
     props.type === "filled" ? "black" : "transparent"};
   color:black;
 `;
-
+const Span = styled.span`
+  margin-left : 33%;
+`;
 
 const Option = styled.option``;
 
@@ -79,12 +81,15 @@ const ProductList = () => {
   return (
     <Container>
       <Navbar />
+
+      <Title>
       <TopButton>
-      <Link to="/">
-              CONTINUE SUA BUSCA
-      </Link>
-      </TopButton>
-      <Title>{cat.toUpperCase()}</Title>
+        <Link to="/">
+                CONTINUE SUA BUSCA
+        </Link>
+        </TopButton>
+        <Span>{cat.toUpperCase()}</Span> 
+      </Title>
       <FilterContainer>
         <Filter>
           <FilterText>Filtros:</FilterText>
