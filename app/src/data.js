@@ -25,20 +25,20 @@ export const sliderItems = [
   export const categories = [
     {
       id: 1,
-      img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      title: "SHIRT STYLE!",
+      img: "https://cdn.leroymerlin.com.br/products/papel_de_parede_para_studio_ou_ambientes_corporativos_cor_cin_1567633440_030d_600x600.jpg",
+      title: "ESTILIZADAS",
       cat: 'estilizadas'
     },
     {
       id: 2,
-      img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      title: "LOUNGEWEAR LOVE",
+      img: "https://cdn.leroymerlin.com.br/products/papel_de_parede_para_studio_ou_ambientes_corporativos_cor_cin_1567633440_030d_600x600.jpg",
+      title: "ESCRITÓRIO",
       cat: 'escritorio'
     },
     {
       id: 3,
-      img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      title: "LIGHT JACKETS",
+      img: "https://cdn.leroymerlin.com.br/products/papel_de_parede_para_studio_ou_ambientes_corporativos_cor_cin_1567633440_030d_600x600.jpg",
+      title: "COMUNS",
       cat: 'comuns'
     },
   ];

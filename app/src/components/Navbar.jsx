@@ -75,13 +75,9 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <SearchContainer>
-            <Input placeholder="Search" />
-            <Search style={{ color: "gray", fontSize: 16 }} />
-          </SearchContainer>
         </Left>
         <Center>
-          <Logo>LAMA.</Logo>
+          <Logo>PENAPP!</Logo>
         </Center>
         <Right>
           <MenuItem>REGISTER</MenuItem>
