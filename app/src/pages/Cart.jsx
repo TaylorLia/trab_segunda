@@ -262,6 +262,7 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>{cart.total}</SummaryItemPrice>
             </SummaryItem>
+            <Button>FAZER PEDIDO</Button>
             <StripeCheckout
               name="PENAPP"
               image="https://img.freepik.com/fotos-premium/linda-caneta-tinteiro_309761-528.jpg"
