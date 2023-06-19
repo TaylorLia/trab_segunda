@@ -84,14 +84,14 @@ const Navbar = () => {
     } catch (error) {
       console.log(error);
     }  
-
-
   }
 
   return (
     <Container>
       <Wrapper>
         <Left>
+        {user?.isAdmin && <MenuItem>Cadastrar produto</MenuItem> } 
+        {user?.isAdmin && <MenuItem>Listagem de pedidos</MenuItem> }
         </Left>
         <Center>
           <Logo>PENAPP!</Logo>
