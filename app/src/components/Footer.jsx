@@ -9,6 +9,7 @@ import {
 } from "@material-ui/icons";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -88,11 +89,11 @@ const Footer = () => {
   return (
     <Container>
       <Left>
-        <Logo>LAMA.</Logo>
+        <Logo>PENAPP.</Logo>
         <Desc>
-          There are many variations of passages of Lorem Ipsum available, but
-          the majority have suffered alteration in some form, by injected
-          humour, or randomised words which don’t look even slightly believable.
+          Somo uma emqpresa produtora e vendedora de canetas para o mundo todo !!. Nos importamos em atender
+          todos os tipos de demandas, desde a canetas comuns até canetas complemtamente estilizadas que as mais diversas
+          personalizações, Tudo para oferecer uma melhor experiencia com canetas para você !!
         </Desc>
         <SocialContainer>
           <SocialIcon color="3B5999">
@@ -110,32 +111,31 @@ const Footer = () => {
         </SocialContainer>
       </Left>
       <Center>
-        <Title>Useful Links</Title>
+        <Title>Links</Title>
         <List>
-          <ListItem>Home</ListItem>
-          <ListItem>Cart</ListItem>
-          <ListItem>Man Fashion</ListItem>
-          <ListItem>Woman Fashion</ListItem>
-          <ListItem>Accessories</ListItem>
-          <ListItem>My Account</ListItem>
-          <ListItem>Order Tracking</ListItem>
-          <ListItem>Wishlist</ListItem>
-          <ListItem>Wishlist</ListItem>
-          <ListItem>Terms</ListItem>
+          <ListItem>
+            <Link to="/">
+              Home
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link to="/cart">
+              Cart
+            </Link>
+            </ListItem>
         </List>
       </Center>
       <Right>
-        <Title>Contact</Title>
+        <Title>Contato</Title>
         <ContactItem>
-          <Room style={{marginRight:"10px"}}/> 622 Dixie Path , South Tobinchester 98336
+          <Room style={{marginRight:"10px"}}/> Universidade do contestado
         </ContactItem>
         <ContactItem>
-          <Phone style={{marginRight:"10px"}}/> +1 234 56 78
+          <Phone style={{marginRight:"10px"}}/> 5547984480699
         </ContactItem>
         <ContactItem>
-          <MailOutline style={{marginRight:"10px"}} /> contact@lama.dev
+          <MailOutline style={{marginRight:"10px"}} /> marcio.junior@aluno.unc.br
         </ContactItem>
-        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
       </Right>
     </Container>
   );
