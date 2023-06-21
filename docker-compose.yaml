@@ -12,6 +12,8 @@ services:
       MYSQL_DATABASE: db_prisma
     volumes:
       - ./mysql_data:/var/lib/mysql
+    ports:
+      - '9090:3306'
     networks: 
       - ecommerce
 
