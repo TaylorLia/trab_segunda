@@ -9,3 +9,59 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Usuario {
+  ID           Int       @id @default(autoincrement())
+  NOME         String
+  USUARIO      String
+  SENHA        String
+  CPF          String
+  EMAIL        String
+  ENDERECO     String
+  NUMERO       Int?
+  BAIRRO       String
+  CIDADE       String
+  UF           String
+  CEP          String
+  FONE         String
+  IS_ADM       Boolean  @default(false)
+  ULTIMO_ACESSO DateTime?
+  Pedidos      Pedido[]
+  
+}
+
+model Produto {
+  ID          Int       @id @default(autoincrement())
+  NOME        String
+  DESCRICAO   String?
+  PRECO       Float
+  Carrinho      Carrinho[]
+}
+
+model Pedido {
+  ID            Int         @id @default(autoincrement())
+  USUARIO_ID    Int
+  DT_INCLUSAO   DateTime    @default(now())
+  DT_ALTERACAO  DateTime    @default(now())
+  VLR_TOTAL     Float
+  STATUS        Status      @default(PENDENTE)
+  Usuario       Usuario     @relation(fields: [USUARIO_ID], references: [ID])
+  Carrinho      Carrinho[]
+}
+
+model Carrinho {
+  PEDIDO_ID    Int      @map("PEDIDO_ID")
+  PRODUTO_ID   Int      @map("PRODUTO_ID")
+  QTDE         Int
+  VLR_UNITARIO Float
+  Pedido       Pedido   @relation(fields: [PEDIDO_ID], references: [ID])
+  Produto      Produto  @relation(fields: [PRODUTO_ID], references: [ID])
+
+  @@id([PEDIDO_ID, PRODUTO_ID])
+}
+
+enum Status {
+  PENDENTE
+  PAGO
+  FINALIZADO
+}
