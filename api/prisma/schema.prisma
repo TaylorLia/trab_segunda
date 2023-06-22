@@ -35,6 +35,8 @@ model Produto {
   NOME        String
   DESCRICAO   String?
   PRECO       Float
+  IMAGEM      String?
+  CATEGORIA String?
   Carrinho      Carrinho[]
 }
 

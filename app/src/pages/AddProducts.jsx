@@ -77,15 +77,24 @@ const AddProducts = () => {
         <Title>Adicionar Produto</Title>
         <Form>
           <Input 
-            placeholder="Nome de Usuario"
+            placeholder="Nome do produto"
             // onChange={(e) => setUsername(e.target.value)} 
-            />
+          />
             
           <Input
-            placeholder="senha"
-            type="password"
+            placeholder="Descrição do produto"
             // onChange={(e) => setPassword(e.target.value)} 
-            />
+          />
+
+          <Input
+            placeholder="Preço"
+            // onChange={(e) => setPassword(e.target.value)} 
+          />
+
+          <Input
+            placeholder="Url da imagem"
+            // onChange={(e) => setPassword(e.target.value)} 
+          />
           <Button disabled={false}>
             LOGIN
           </Button>
