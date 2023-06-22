@@ -3,7 +3,7 @@ version: '3'
 services:
   db:
     image: mysql:5.7
-    command: --innodb-use-native-aio=0
+    command: --server-id=1 --log-bin=/var/lib/mysql/mysql-bin.log --binlog-do-db=mydatabase --binlog-format=row --innodb_flush_log_at_trx_commit=1 --innodb_lock_wait_timeout=50
     container_name: db_prisma
     restart: always
     tty: true
@@ -16,6 +16,17 @@ services:
       - '9090:3306'
     networks: 
       - ecommerce
+
+  db_slave:
+    image: mysql:5.7
+    command: --server-id=2 --log-bin=/var/lib/mysql/mysql-bin.log --binlog-do-db=mydatabase --skip-log-bin --innodb_flush_log_at_trx_commit=1 --innodb_lock_wait_timeout=50 --relay-log=/var/lib/mysql/relay-bin.log --log-slave-updates --read-only=1 --slave-skip-errors=all --master-info-repository=TABLE --relay-log-info-repository=TABLE
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_prisma
+    volumes:
+      - ./mysql_slave:/var/lib/mysql
+    depends_on:
+      - db_master
 
 networks:
   ecommerce:
