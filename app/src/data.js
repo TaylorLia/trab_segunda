@@ -25,19 +25,19 @@ export const sliderItems = [
   export const categories = [
     {
       id: 1,
-      img: "https://cdn.leroymerlin.com.br/products/papel_de_parede_para_studio_ou_ambientes_corporativos_cor_cin_1567633440_030d_600x600.jpg",
+      img: "https://www.designi.com.br/images/preview/10896499.jpg",
       title: "ESTILIZADAS",
       cat: 'estilizadas'
     },
     {
       id: 2,
-      img: "https://cdn.leroymerlin.com.br/products/papel_de_parede_para_studio_ou_ambientes_corporativos_cor_cin_1567633440_030d_600x600.jpg",
+      img: "https://img.freepik.com/fotos-gratis/postura-plana-da-estacao-de-trabalho-com-uma-xicara-de-cha-e-copie-o-espaco_23-2148430864.jpg",
       title: "ESCRITÓRIO",
       cat: 'escritorio'
     },
     {
       id: 3,
-      img: "https://cdn.leroymerlin.com.br/products/papel_de_parede_para_studio_ou_ambientes_corporativos_cor_cin_1567633440_030d_600x600.jpg",
+      img: "https://www.metropoles.com/_next/image?url=https%3A%2F%2Fuploads.metropoles.com%2Fwp-content%2Fuploads%2F2022%2F01%2F19134043%2FVolta_as_Aulas_Material_Escolar.jpg&w=3840&q=75",
       title: "COMUNS",
       cat: 'comuns'
     },
