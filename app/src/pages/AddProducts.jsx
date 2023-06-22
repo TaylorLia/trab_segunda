@@ -80,6 +80,7 @@ const AddProducts = () => {
             placeholder="Nome de Usuario"
             // onChange={(e) => setUsername(e.target.value)} 
             />
+            
           <Input
             placeholder="senha"
             type="password"
