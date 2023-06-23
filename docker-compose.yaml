@@ -1,28 +1,28 @@
 version: '3'
-
 services:
-  db_main:
+  db_master:
     image: mysql:latest
+    container_name: db_master
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=db_prisma
     volumes:
-      - ./mysql_data:/var/lib/mysql
+      - ./data_master:/var/lib/mysql
+      - ./master/my.cnf:/etc/my.cnf
     ports:
-      - '9090:3306'
+      - 9090:3306
 
   db_slave:
     image: mysql:latest
+    container_name: db_slave
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=db_prisma
-      - MYSQL_MASTER_HOST=db_main
-      - MYSQL_MASTER_USER=root
-      - MYSQL_MASTER_PASSWORD=root
-      - MYSQL_MASTER_PORT=3306
     volumes:
-      - ./mysql_slave:/var/lib/mysql
-    depends_on:
-      - db_main
+      - ./data_slave:/var/lib/mysql
+      - ./slave/my.cnf:/etc/my.cnf
+    command: bash -c "chmod 644 /etc/my.cnf && exec mysqld"
+    ports:
+      - 9091:3306

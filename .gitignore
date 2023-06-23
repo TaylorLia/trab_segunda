@@ -1,2 +1,4 @@
 /mysql_data
 /mysql_slave
+/data_slave
+/data_master

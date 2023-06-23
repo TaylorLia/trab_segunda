@@ -1,0 +1,14 @@
+CREATE USER 'replicacao'@'%' IDENTIFIED BY 'replicacao';
+GRANT REPLICATION SLAVE ON *.* TO 'replicacao'@'%';
+FLUSH PRIVILEGES;
+FLUSH TABLES WITH READ LOCK;
+SHOW MASTER STATUS;
+
+1.000004 |     1161 | db_prisma
+
+
+	CHANGE MASTER TO MASTER_HOST='db_master',
+						MASTER_USER='replicacao',
+						MASTER_PASSWORD='replicacao',
+						MASTER_LOG_FILE='1.000004',
+						MASTER_LOG_POS=1161;
