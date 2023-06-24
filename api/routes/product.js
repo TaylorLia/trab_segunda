@@ -4,30 +4,45 @@ const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
+const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
 const router = require("express").Router();
 
-// CREATE
+const prisma = new PrismaClient();
+
+//CREATE
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  const { NOME, DESCRICAO, PRECO, IMAGEM, CATEGORIA } = req.body;
 
-  try {
-    const newProduct = await prisma.produto.create({
-      data: {
-        NOME,
-        DESCRICAO,
-        PRECO,
-        IMAGEM,
-        CATEGORIA,
-      },
-    });
+  const {
+    nome,
+    descricao,
+    preco,
+    imagem,
+    categoria
+  } = req.body
 
-    res.status(200).json(newProduct);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+try {  
+  const produto = await prisma.produto.create({
+    data : {
+      nome,
+      descricao,
+      preco : parseFloat(preco),
+      imagem,
+      categoria
+    }
+  })
+
+  res.status(200).json(produto)
+
+} catch (error) {
+  console.log(error);
+  res.status(500).json(error)
+} finally {
+  await prisma.$disconnect()
+}
+
 });
 
 // UPDATE
@@ -74,8 +89,27 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 // GET ALL
 router.get("/", async (req, res) => {
+
+  // products = await Product.find({
+  //   categories: {
+  //     $in: [qCategory],
+  //   },
+  // });
+
+  
+  const qCategory = req.query.category;
+
   try {
-    const products = await prisma.produto.findMany();
+    let products;
+     if (qCategory) {
+      products = await prisma.produto.findMany({
+        where : {
+          categoria : qCategory
+        }
+      })
+    } else {
+      products = await prisma.produto.findMany()
+    }
 
     res.status(200).json(products);
   } catch (err) {
