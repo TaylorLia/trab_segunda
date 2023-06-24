@@ -2,24 +2,54 @@ const router = require("express").Router();
 const User = require("../models/User");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
 
 //REGISTER
 router.post("/register", async (req, res) => {
-  const newUser = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: CryptoJS.AES.encrypt(
-      req.body.password,
-      process.env.PASS_SEC
-    ).toString(),
-  });
 
-  try {
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  const {
+    nome,
+    email,
+    username,
+    cpf,
+    fone,
+    endereco,
+    cidade,
+    bairro,
+    cep,
+    numero,
+    senha
+  } = req.body;
+try {
+  const user = await prisma.usuario.create({
+    data : {
+      nome : nome,
+      email : email,
+      usuario : username,
+      cpf : cpf,
+      fone : fone,
+      endereco : endereco,
+      cidade : cidade,
+      bairro : bairro,
+      cep : cep,
+      numero : numero,
+      senha: CryptoJS.AES.encrypt(
+            req.body.password,
+            process.env.PASS_SEC
+          ).toString(),
+    }
+  })
+  res.status(201).json(user);
+} catch (error) {
+  console.log(error)
+  res.status(500).json({erro :  error});
+}finally{
+  await prisma.$disconnect();
+}
+
+
 
   
 

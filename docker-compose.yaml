@@ -12,17 +12,3 @@ services:
       - ./master/my.cnf:/etc/my.cnf
     ports:
       - 9090:3306
-
-  db_slave:
-    image: mysql:latest
-    container_name: db_slave
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=db_prisma
-    volumes:
-      - ./data_slave:/var/lib/mysql
-      - ./slave/my.cnf:/etc/my.cnf
-    command: bash -c "chmod 644 /etc/my.cnf && exec mysqld"
-    ports:
-      - 9091:3306

@@ -11,55 +11,54 @@ datasource db {
 }
 
 model Usuario {
-  ID           Int       @id @default(autoincrement())
-  NOME         String
-  USUARIO      String
-  SENHA        String
-  CPF          String
-  EMAIL        String
-  ENDERECO     String
-  NUMERO       Int?
-  BAIRRO       String
-  CIDADE       String
-  UF           String
-  CEP          String
-  FONE         String
-  IS_ADM       Boolean  @default(false)
-  ULTIMO_ACESSO DateTime?
-  Pedidos      Pedido[]
-  
+  id           Int       @id @default(autoincrement())
+  nome         String
+  usuario      String    @unique
+  senha        String
+  cpf          String
+  email        String
+  endereco     String
+  numero       Int?
+  bairro       String
+  cidade       String
+  cep          String
+  fone         String
+  is_adm       Boolean  @default(false)
+  ultimo_acesso DateTime?
+  pedidos      Pedido[]
 }
 
 model Produto {
-  ID          Int       @id @default(autoincrement())
-  NOME        String
-  DESCRICAO   String?
-  PRECO       Float
-  IMAGEM      String?
-  CATEGORIA String?
-  Carrinho      Carrinho[]
+  id          Int       @id @default(autoincrement())
+  nome        String
+  descricao   String?
+  preco       Float
+  imagem      String?
+  categoria   String?
+  carrinhos   Carrinho[]
 }
 
 model Pedido {
-  ID            Int         @id @default(autoincrement())
-  USUARIO_ID    Int
-  DT_INCLUSAO   DateTime    @default(now())
-  DT_ALTERACAO  DateTime    @default(now())
-  VLR_TOTAL     Float
-  STATUS        Status      @default(PENDENTE)
-  Usuario       Usuario     @relation(fields: [USUARIO_ID], references: [ID])
-  Carrinho      Carrinho[]
+  id            Int         @id @default(autoincrement())
+  usuario_id    Int
+  dt_inclusao   DateTime    @default(now())
+  dt_alteracao  DateTime    @default(now())
+  vlr_total     Float
+  status        Status      @default(PENDENTE)
+  usuario       Usuario     @relation(fields: [usuario_id], references: [id])
+  carrinhos     Carrinho[]
 }
 
 model Carrinho {
-  PEDIDO_ID    Int      @map("PEDIDO_ID")
-  PRODUTO_ID   Int      @map("PRODUTO_ID")
-  QTDE         Int
-  VLR_UNITARIO Float
-  Pedido       Pedido   @relation(fields: [PEDIDO_ID], references: [ID])
-  Produto      Produto  @relation(fields: [PRODUTO_ID], references: [ID])
+  id          Int      @id @default(autoincrement())
+  pedido_id   Int
+  produto_id  Int
+  qtde        Int
+  vlr_unitario Float
+  pedido      Pedido   @relation(fields: [pedido_id], references: [id])
+  produto     Produto  @relation(fields: [produto_id], references: [id])
 
-  @@id([PEDIDO_ID, PRODUTO_ID])
+  @@unique([pedido_id, produto_id])
 }
 
 enum Status {
