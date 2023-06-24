@@ -3,31 +3,26 @@ import { createSlice } from "@reduxjs/toolkit";
 const productSlice = createSlice({
   name: "product",
   initialState: {
-    product : {
-      name: '',
-      img: '',
-      price : 0.0,
-      desc : '',
-      categoria : '',
-      carrinho : 0,
-    },
-    isFetching : false,
-    error : false
+    isFetching: false,
+    error: false,
+    success : null
   },
   reducers: {
-    sendProduct: (state) => {
+    saveStart: (state) => {
       state.isFetching = true;
     },
-    savedSucess: (state, action) => {
+    saveSuccess: (state) => {
       state.isFetching = false;
       state.error = false;
+      state.success = true;
     },
-    savedFailure: (state) => {
+    saveFailure: (state) => {
       state.isFetching = false;
       state.error = true;
     },
+
   },
 });
 
-export const { addProduct } = productSlice.actions;
+export const { saveStart, saveSuccess, saveFailure } = productSlice.actions;
 export default productSlice.reducer;

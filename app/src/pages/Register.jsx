@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
+import { register } from "../redux/apiCalls";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 
 const Container = styled.div`
@@ -64,30 +67,60 @@ const Link_a = styled.a`
   cursor: pointer;
   margin : 10px;
 `;
-
+const Error = styled.span`
+  color: red;
+`;
 const Register = () => {
+  const dispatch = useDispatch();
+  const [user, setUser] = useState({
+    nome : '',
+    email: '',
+    username : '',
+    cpf : '',
+    fone : '',
+    endereco : '',
+    cidade : '',
+    bairro : '',
+    cep : '',
+    numero : 0,
+    senha : ''
+  });
+  const { isFetching, error } = useSelector((state) => state.user);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    register(dispatch, user);
+  }
+  
+useEffect(()=> console.log( JSON.stringify(user)),[user]);
+
   return (
     <Container>
       <Wrapper>
         <Title>CRIE UMA CONTA</Title>
         <Form>
-          <Input placeholder="Nome" />
-          <Input placeholder="email" type="email" />
-          <Input placeholder="Username" />
-          <Input placeholder="CPF" />
-          <Input placeholder="Celular" type="phone"/>
-          <Input placeholder="Endereço" />
-          <Input placeholder="Cidade" />
-          <Input placeholder="Numero" />
-          <Input placeholder="Senha" />
+          <Input placeholder="Nome" onChange={ (e) => setUser({...user, nome : e.target.value})}/>
+          <Input placeholder="email" type="email" onChange={(e) => setUser({...user, email : e.target.value})} />
+          <Input placeholder="Username" onChange={(e) => setUser({...user, username : e.target.value})} />
+          <Input placeholder="CPF" onChange={(e) => setUser({...user, cpf : e.target.value})} />
+          <Input placeholder="Celular" type="phone" onChange={(e) => setUser({...user, fone : e.target.value})} />
+          <Input placeholder="Endereço" onChange={(e) => setUser({...user, endereco : e.target.value})} />
+          <Input placeholder="Cidade" onChange={(e) => setUser({...user, cidade : e.target.value})} />
+          <Input placeholder="Bairro" onChange={(e) => setUser({...user, bairro : e.target.value})} />
+          <Input placeholder="CEP" onChange={(e) => setUser({...user, cep : Number(e.target.value)})} />
+          <Input placeholder="Numero" type="number" onChange={(e) => setUser({...user, numero : e.target.value})} />
+          <Input placeholder="Senha" type="password" onChange={(e) => setUser({...user, senha : e.target.value})} />
           <Agreement>
             Ou, então
             <Link to="/login">
               <span> </span>entre com sua conta
             </Link>
           </Agreement>
-          <Button>CREATE</Button>
+          <Button onClick={handleClick}>CADASTRE-SE</Button>
         </Form>
+        <Wrapper>
+        {error && <Error>Houve um erro...</Error>} 
+        </Wrapper>
       </Wrapper>
     </Container>
   );

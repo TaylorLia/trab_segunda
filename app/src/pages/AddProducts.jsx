@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useEffect, useState } from "react";
 import styled from "styled-components";
 import {mobile} from "../responsive";
-import { login } from "../redux/apiCalls";
+import { login, saveProduct } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import axios from "axios";
@@ -71,62 +72,70 @@ const Link_a = styled.a`
 const Error = styled.span`
   color: red;
 `;
+const Success = styled.span`
+  color: green;
+`;
+
 
 const AddProducts = () => {
-  const [product, setProduct] = useState({
-    name : null,
-    desc : null,
-    price : null,
-    img : null,
-    cat : null
+ 
+  const [produto, setProduto] = useState({
+    nome : '',
+    descricao : '',
+    preco : 0,
+    imagem : '',
+    categoria : '',
   });
+  const dispatch = useDispatch();
+  const token = useSelector(state=>state.user.accessToken);
+  const succes = useSelector(state=>state.product.success);
 
-  const handleClick = async() => {
-    try {
-      const res = await axios.post('localhost:5000/api/products', {
-      })
-    } catch (error) {
-      console.log(error)
-    }
-
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log()
+    saveProduct(dispatch, produto, token);
   }
 
+useEffect(() => console.log(JSON.stringify(produto)), [produto])
   return (
+  <>
+    <Navbar />
     <Container>
       <Wrapper>
         <Title>Adicionar Produto</Title>
         <Form>
           <Input 
             placeholder="Nome do produto"
-             onChange={(e) => setProduct({...product, name : e.target.value})} 
-          />
+            onChange={(e) => setProduto({...produto, nome : e.target.value})} 
+            />
             
           <Input
             placeholder="Descrição do produto"
-              onChange={(e) => setProduct({...product, desc : e.target.value})} 
-          />
+            onChange={(e) => setProduto({...produto, descricao : e.target.value})} 
+            />
 
           <Input
             placeholder="Preço"
             type="number"
-             onChange={(e) => setProduct({...product, price : e.target.value})} 
-          />
+            onChange={(e) => setProduto({...produto, preco : e.target.value})} 
+            />
 
           <Input
             placeholder="Url da imagem"
-             onChange={(e) => setProduct({...product, img : e.target.value})} 
-          />
-
-          <Input
-            placeholder="Categoria do produto"
-            onChange={(e) => setProduct({...product, cat : e.target.value})} 
-          />
-          <Button disabled={false} onClick={handleClick}>
-            CADASTRAR
+            onChange={(e) => setProduto({...produto, imagem : e.target.value})} 
+            />
+            <Input
+            placeholder="Categoria"
+            onChange={(e) => setProduto({...produto, categoria : e.target.value})} 
+            />
+          <Button onClick={handleClick}>
+            Cadastrar Produto
           </Button>
+          {succes && <Success>Cadastrado com sucesso</Success> }
         </Form>
       </Wrapper>
     </Container>
+ </>
   );
 };
 
