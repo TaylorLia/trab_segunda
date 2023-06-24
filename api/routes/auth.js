@@ -34,9 +34,9 @@ try {
       cidade : cidade,
       bairro : bairro,
       cep : cep,
-      numero : numero,
+      numero : Number(numero),
       senha: CryptoJS.AES.encrypt(
-            req.body.password,
+            senha,
             process.env.PASS_SEC
           ).toString(),
     }

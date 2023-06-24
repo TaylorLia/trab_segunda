@@ -8,10 +8,10 @@ CREATE TABLE `Usuario` (
     `email` VARCHAR(191) NOT NULL,
     `endereco` VARCHAR(191) NOT NULL,
     `numero` INTEGER NULL,
-    `bairro` VARCHAR(191) NOT NULL,
+    `bairro` VARCHAR(191) NULL,
     `cidade` VARCHAR(191) NOT NULL,
-    `cep` VARCHAR(191) NOT NULL,
-    `fone` VARCHAR(191) NOT NULL,
+    `cep` VARCHAR(191) NULL,
+    `fone` VARCHAR(191) NULL,
     `is_adm` BOOLEAN NOT NULL DEFAULT false,
     `ultimo_acesso` DATETIME(3) NULL,
 

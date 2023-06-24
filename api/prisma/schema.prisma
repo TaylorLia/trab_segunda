@@ -19,10 +19,10 @@ model Usuario {
   email        String
   endereco     String
   numero       Int?
-  bairro       String
+  bairro       String?
   cidade       String
-  cep          String
-  fone         String
+  cep          String?
+  fone         String?
   is_adm       Boolean  @default(false)
   ultimo_acesso DateTime?
   pedidos      Pedido[]

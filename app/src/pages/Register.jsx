@@ -82,7 +82,7 @@ const Register = () => {
     cidade : '',
     bairro : '',
     cep : '',
-    numero : '',
+    numero : 0,
     senha : ''
   });
   const { isFetching, error } = useSelector((state) => state.user);
@@ -107,9 +107,9 @@ useEffect(()=> console.log( JSON.stringify(user)),[user]);
           <Input placeholder="Endereço" onChange={(e) => setUser({...user, endereco : e.target.value})} />
           <Input placeholder="Cidade" onChange={(e) => setUser({...user, cidade : e.target.value})} />
           <Input placeholder="Bairro" onChange={(e) => setUser({...user, bairro : e.target.value})} />
-          <Input placeholder="CEP" onChange={(e) => setUser({...user, cep : e.target.value})} />
-          <Input placeholder="Numero" onChange={(e) => setUser({...user, numero : e.target.value})} />
-          <Input placeholder="Senha" onChange={(e) => setUser({...user, senha : e.target.value})} />
+          <Input placeholder="CEP" onChange={(e) => setUser({...user, cep : Number(e.target.value)})} />
+          <Input placeholder="Numero" type="number" onChange={(e) => setUser({...user, numero : e.target.value})} />
+          <Input placeholder="Senha" type="password" onChange={(e) => setUser({...user, senha : e.target.value})} />
           <Agreement>
             Ou, então
             <Link to="/login">
