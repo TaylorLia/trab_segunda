@@ -74,7 +74,6 @@ const MenuItem = styled.div`
 const Navbar = () => {
   const quantity = useSelector(state=>state.cart.quantity);
   const user = useSelector((state) => state.user.currentUser);
-  const history = useHistory();
 
 
   const checkout = () => {
@@ -90,8 +89,8 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-        {user?.isAdmin && <Link to="/addproducts"> <MenuItem>Cadastrar produto</MenuItem></Link>} 
-        {user?.isAdmin && <Link to="/listorders"><MenuItem>Listagem de pedidos</MenuItem></Link> }
+        {user?.is_adm && <Link to="/addproducts"> <MenuItem>Cadastrar produto</MenuItem></Link>} 
+        {user?.is_adm && <Link to="/listorders"><MenuItem>Listagem de pedidos</MenuItem></Link> }
         </Left>
         <Center>
           <Logo>PENAPP!</Logo>
@@ -103,7 +102,7 @@ const Navbar = () => {
         {!user && <Link to="/register">
           <MenuItem>CADASTRE-SE</MenuItem>
         </Link>}
-        {user?.username}
+        {user?.usuario}
         {user && <MenuItem onClick={checkout}>SAIR</MenuItem>}
           <Link to="/cart">
           <MenuItem>
