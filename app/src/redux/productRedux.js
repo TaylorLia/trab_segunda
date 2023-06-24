@@ -3,18 +3,28 @@ import { createSlice } from "@reduxjs/toolkit";
 const productSlice = createSlice({
   name: "product",
   initialState: {
-    name: '',
-    img: '',
-    price : 0.0,
-    desc : '',
-    categoria : '',
-    carrinho : 0
+    product : {
+      name: '',
+      img: '',
+      price : 0.0,
+      desc : '',
+      categoria : '',
+      carrinho : 0,
+    },
+    isFetching : false,
+    error : false
   },
   reducers: {
-    addProduct: (state, action) => {
-      state.quantity += 1;
-      state.products.push(action.payload);
-      state.total += action.payload.price * action.payload.quantity;
+    sendProduct: (state) => {
+      state.isFetching = true;
+    },
+    savedSucess: (state, action) => {
+      state.isFetching = false;
+      state.error = false;
+    },
+    savedFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
     },
   },
 });

@@ -11,25 +11,16 @@ const router = require("express").Router();
 
 // CREATE
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  const { title, desc, img, categories, size, color, price, inStock } = req.body;
+  const { NOME, DESCRICAO, PRECO, IMAGEM, CATEGORIA } = req.body;
 
   try {
-    const newProduct = await prisma.product.create({
+    const newProduct = await prisma.produto.create({
       data: {
-        title,
-        desc,
-        img,
-        categories: {
-          set: categories,
-        },
-        size: {
-          set: size,
-        },
-        color: {
-          set: color,
-        },
-        price,
-        inStock,
+        NOME,
+        DESCRICAO,
+        PRECO,
+        IMAGEM,
+        CATEGORIA,
       },
     });
 
@@ -42,28 +33,19 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 // UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   const { id } = req.params;
-  const { title, desc, img, categories, size, color, price, inStock } = req.body;
+  const { NOME, DESCRICAO, PRECO, IMAGEM, CATEGORIA } = req.body;
 
   try {
-    const updatedProduct = await prisma.product.update({
+    const updatedProduct = await prisma.produto.update({
       where: {
         id,
       },
       data: {
-        title,
-        desc,
-        img,
-        categories: {
-          set: categories,
-        },
-        size: {
-          set: size,
-        },
-        color: {
-          set: color,
-        },
-        price,
-        inStock,
+        NOME,
+        DESCRICAO,
+        PRECO,
+        IMAGEM,
+        CATEGORIA,
       },
     });
 
@@ -78,7 +60,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {
-    await prisma.product.delete({
+    await prisma.produto.delete({
       where: {
         id,
       },
@@ -90,49 +72,10 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
-// GET PRODUCT
-router.get("/find/:id", async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const product = await prisma.product.findUnique({
-      where: {
-        id,
-      },
-    });
-
-    res.status(200).json(product);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// GET ALL PRODUCTS
+// GET ALL
 router.get("/", async (req, res) => {
-  const qNew = req.query.new;
-  const qCategory = req.query.category;
-
   try {
-    let products;
-
-    if (qNew) {
-      products = await prisma.product.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: 1,
-      });
-    } else if (qCategory) {
-      products = await prisma.product.findMany({
-        where: {
-          categories: {
-            has: qCategory,
-          },
-        },
-      });
-    } else {
-      products = await prisma.product.findMany();
-    }
+    const products = await prisma.produto.findMany();
 
     res.status(200).json(products);
   } catch (err) {

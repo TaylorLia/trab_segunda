@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
+import axios from "axios";
 
 const Container = styled.div`
   width: 100vw;
@@ -82,7 +83,13 @@ const AddProducts = () => {
 
   const handleClick = async() => {
     try {
-
+      const res = await axios.post('localhost:5000/api/products', {
+    NOME       
+    DESCRICAO  
+    PRECO      
+    IMAGEM     
+    CATEGORIA
+      })
     } catch (error) {
       console.log(error)
     }

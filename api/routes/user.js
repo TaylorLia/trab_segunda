@@ -12,25 +12,25 @@ const router = require("express").Router();
 // UPDATE
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
   const { id } = req.params;
-  let { password, ...userData } = req.body;
+  let { SENHA, ...userData } = req.body;
 
-  if (password) {
-    password = CryptoJS.AES.encrypt(password, process.env.PASS_SEC).toString();
+  if (SENHA) {
+    SENHA = CryptoJS.AES.encrypt(SENHA, process.env.PASS_SEC).toString();
     userData = {
       ...userData,
-      password,
+      SENHA,
     };
   }
 
   try {
-    const updatedUser = await prisma.user.update({
+    const updatedUser = await prisma.usuario.update({
       where: {
         id,
       },
       data: userData,
     });
 
-    const { password: omitPassword, ...others } = updatedUser;
+    const { SENHA: omitPassword, ...others } = updatedUser;
 
     res.status(200).json(others);
   } catch (err) {
@@ -43,7 +43,7 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
   const { id } = req.params;
 
   try {
-    await prisma.user.delete({
+    await prisma.usuario.delete({
       where: {
         id,
       },
@@ -60,14 +60,15 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.usuario.findUnique({
       where: {
         id,
       },
       select: {
         id: true,
-        username: true,
-        email: true,
+        NOME: true,
+        USUARIO: true,
+        EMAIL: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -87,14 +88,14 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
     let users;
 
     if (query) {
-      users = await prisma.user.findMany({
+      users = await prisma.usuario.findMany({
         orderBy: {
           id: "desc",
         },
         take: 5,
       });
     } else {
-      users = await prisma.user.findMany();
+      users = await prisma.usuario.findMany();
     }
 
     res.status(200).json(users);
@@ -109,7 +110,7 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
 
   try {
-    const data = await prisma.user.groupBy({
+    const data = await prisma.usuario.groupBy({
       by: ["createdAt"],
       where: {
         createdAt: {

@@ -38,11 +38,11 @@ router.post("/register", async (req, res) => {
 // LOGIN
 router.post('/login', async (req, res) => {
   try {
-    const { user_name, password } = req.body;
+    const { username, password } = req.body;
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.usuario.findUnique({
       where: {
-        userName: user_name,
+        USUARIO: username,
       },
     });
 

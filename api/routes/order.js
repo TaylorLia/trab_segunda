@@ -11,18 +11,17 @@ const router = require("express").Router();
 
 // CREATE
 router.post("/", verifyToken, async (req, res) => {
-  const { userId, products, amount, address, status } = req.body;
+  const { USUARIO_ID, VLR_TOTAL, STATUS, Carrinho } = req.body;
 
   try {
-    const newOrder = await prisma.order.create({
+    const newOrder = await prisma.pedido.create({
       data: {
-        userId,
-        products: {
-          create: products,
+        USUARIO_ID,
+        VLR_TOTAL,
+        STATUS,
+        Carrinho: {
+          create: Carrinho,
         },
-        amount,
-        address,
-        status,
       },
     });
 
@@ -35,20 +34,20 @@ router.post("/", verifyToken, async (req, res) => {
 // UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   const { id } = req.params;
-  const { products, amount, address, status } = req.body;
+  const { USUARIO_ID, VLR_TOTAL, STATUS, Carrinho } = req.body;
 
   try {
-    const updatedOrder = await prisma.order.update({
+    const updatedOrder = await prisma.pedido.update({
       where: {
         id,
       },
       data: {
-        products: {
-          set: products,
+        USUARIO_ID,
+        VLR_TOTAL,
+        STATUS,
+        Carrinho: {
+          set: Carrinho,
         },
-        amount,
-        address,
-        status,
       },
     });
 
@@ -63,7 +62,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {
-    await prisma.order.delete({
+    await prisma.pedido.delete({
       where: {
         id,
       },
@@ -80,12 +79,12 @@ router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const orders = await prisma.order.findMany({
+    const orders = await prisma.pedido.findMany({
       where: {
-        userId,
+        USUARIO_ID: userId,
       },
       include: {
-        products: true,
+        Carrinho: true,
       },
     });
 
@@ -98,9 +97,9 @@ router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
 // GET ALL
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const orders = await prisma.order.findMany({
+    const orders = await prisma.pedido.findMany({
       include: {
-        products: true,
+        Carrinho: true,
       },
     });
 
@@ -117,7 +116,7 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
   const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
 
   try {
-    const income = await prisma.order.groupBy({
+    const income = await prisma.pedido.groupBy({
       by: ["createdAt"],
       where: {
         createdAt: {
@@ -125,7 +124,7 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
         },
       },
       _sum: {
-        amount: true,
+        VLR_TOTAL: true,
       },
     });
 
