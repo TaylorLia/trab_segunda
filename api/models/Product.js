@@ -1,18 +1,32 @@
-const mongoose = require("mongoose");
+const { PrismaClient } = require("@prisma/client");
 
-const ProductSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true, unique: true },
-    desc: { type: String, required: true, },
-    img: { type: String, required: true },
-    categories: { type: Array },
-    size: { type:  Array },
-    color: { type: Array },
-    price: { type: Number, required: true },
-    inStock: { type: Boolean, default: true },
-    
+const prisma = new PrismaClient();
+
+module.exports = {
+  createProduct: async (title, desc, img, categories, size, color, price, inStock = true) => {
+    const product = await prisma.product.create({
+      data: {
+        title,
+        desc,
+        img,
+        categories,
+        size,
+        color,
+        price,
+        inStock,
+      },
+    });
+
+    return product;
   },
-  { timestamps: true }
-);
 
-module.exports = mongoose.model("Product", ProductSchema);
+  getProductById: async (productId) => {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: productId,
+      },
+    });
+
+    return product;
+  },
+};
