@@ -1,78 +1,137 @@
-const Product = require("../models/Product");
+const { PrismaClient } = require("@prisma/client");
 const {
   verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
 
+const prisma = new PrismaClient();
+
 const router = require("express").Router();
 
-//CREATE
-
+// CREATE
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  const newProduct = new Product(req.body);
+  const { title, desc, img, categories, size, color, price, inStock } = req.body;
 
   try {
-    const savedProduct = await newProduct.save();
-    res.status(200).json(savedProduct);
+    const newProduct = await prisma.product.create({
+      data: {
+        title,
+        desc,
+        img,
+        categories: {
+          set: categories,
+        },
+        size: {
+          set: size,
+        },
+        color: {
+          set: color,
+        },
+        price,
+        inStock,
+      },
+    });
+
+    res.status(200).json(newProduct);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//UPDATE
+// UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { title, desc, img, categories, size, color, price, inStock } = req.body;
+
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
+    const updatedProduct = await prisma.product.update({
+      where: {
+        id,
       },
-      { new: true }
-    );
+      data: {
+        title,
+        desc,
+        img,
+        categories: {
+          set: categories,
+        },
+        size: {
+          set: size,
+        },
+        color: {
+          set: color,
+        },
+        price,
+        inStock,
+      },
+    });
+
     res.status(200).json(updatedProduct);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//DELETE
+// DELETE
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+  const { id } = req.params;
+
   try {
-    await Product.findByIdAndDelete(req.params.id);
+    await prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+
     res.status(200).json("Product has been deleted...");
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//GET PRODUCT
+// GET PRODUCT
 router.get("/find/:id", async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
+
     res.status(200).json(product);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//GET ALL PRODUCTS
+// GET ALL PRODUCTS
 router.get("/", async (req, res) => {
   const qNew = req.query.new;
   const qCategory = req.query.category;
+
   try {
     let products;
 
     if (qNew) {
-      products = await Product.find().sort({ createdAt: -1 }).limit(1);
+      products = await prisma.product.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 1,
+      });
     } else if (qCategory) {
-      products = await Product.find({
-        categories: {
-          $in: [qCategory],
+      products = await prisma.product.findMany({
+        where: {
+          categories: {
+            has: qCategory,
+          },
         },
       });
     } else {
-      products = await Product.find();
+      products = await prisma.product.findMany();
     }
 
     res.status(200).json(products);

@@ -1,66 +1,109 @@
-const Order = require("../models/Order");
+const { PrismaClient } = require("@prisma/client");
 const {
   verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
 
+const prisma = new PrismaClient();
+
 const router = require("express").Router();
 
-//CREATE
-
+// CREATE
 router.post("/", verifyToken, async (req, res) => {
-  const newOrder = new Order(req.body);
+  const { userId, products, amount, address, status } = req.body;
 
   try {
-    const savedOrder = await newOrder.save();
-    res.status(200).json(savedOrder);
+    const newOrder = await prisma.order.create({
+      data: {
+        userId,
+        products: {
+          create: products,
+        },
+        amount,
+        address,
+        status,
+      },
+    });
+
+    res.status(200).json(newOrder);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//UPDATE
+// UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { products, amount, address, status } = req.body;
+
   try {
-    const updatedOrder = await Order.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
+    const updatedOrder = await prisma.order.update({
+      where: {
+        id,
       },
-      { new: true }
-    );
+      data: {
+        products: {
+          set: products,
+        },
+        amount,
+        address,
+        status,
+      },
+    });
+
     res.status(200).json(updatedOrder);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//DELETE
+// DELETE
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+  const { id } = req.params;
+
   try {
-    await Order.findByIdAndDelete(req.params.id);
+    await prisma.order.delete({
+      where: {
+        id,
+      },
+    });
+
     res.status(200).json("Order has been deleted...");
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//GET USER ORDERS
+// GET USER ORDERS
 router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
+  const { userId } = req.params;
+
   try {
-    const orders = await Order.find({ userId: req.params.userId });
+    const orders = await prisma.order.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        products: true,
+      },
+    });
+
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// //GET ALL
-
+// GET ALL
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const orders = await Order.find();
+    const orders = await prisma.order.findMany({
+      include: {
+        products: true,
+      },
+    });
+
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
@@ -68,28 +111,24 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 // GET MONTHLY INCOME
-
 router.get("/income", verifyTokenAndAdmin, async (req, res) => {
   const date = new Date();
   const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
   const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
 
   try {
-    const income = await Order.aggregate([
-      { $match: { createdAt: { $gte: previousMonth } } },
-      {
-        $project: {
-          month: { $month: "$createdAt" },
-          sales: "$amount",
+    const income = await prisma.order.groupBy({
+      by: ["createdAt"],
+      where: {
+        createdAt: {
+          gte: previousMonth,
         },
       },
-      {
-        $group: {
-          _id: "$month",
-          total: { $sum: "$sales" },
-        },
+      _sum: {
+        amount: true,
       },
-    ]);
+    });
+
     res.status(200).json(income);
   } catch (err) {
     res.status(500).json(err);
