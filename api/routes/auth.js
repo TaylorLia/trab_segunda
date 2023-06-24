@@ -1,12 +1,14 @@
 const router = require("express").Router();
-const User = require("../models/User");
+const { PrismaClient } = require("@prisma/client");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-//REGISTER
+const prisma = new PrismaClient();
+
+// REGISTER
 router.post("/register", async (req, res) => {
 
   const {

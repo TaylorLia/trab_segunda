@@ -1,10 +1,12 @@
-const Product = require("../models/Product");
+const { PrismaClient } = require("@prisma/client");
 const {
   verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
 const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
 
 const router = require("express").Router();
 
@@ -43,43 +45,49 @@ try {
 
 });
 
-//UPDATE
+// UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { NOME, DESCRICAO, PRECO, IMAGEM, CATEGORIA } = req.body;
+
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
+    const updatedProduct = await prisma.produto.update({
+      where: {
+        id,
       },
-      { new: true }
-    );
+      data: {
+        NOME,
+        DESCRICAO,
+        PRECO,
+        IMAGEM,
+        CATEGORIA,
+      },
+    });
+
     res.status(200).json(updatedProduct);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//DELETE
+// DELETE
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+  const { id } = req.params;
+
   try {
-    await Product.findByIdAndDelete(req.params.id);
+    await prisma.produto.delete({
+      where: {
+        id,
+      },
+    });
+
     res.status(200).json("Product has been deleted...");
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//GET PRODUCT
-router.get("/find/:id", async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    res.status(200).json(product);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//GET ALL PRODUCTS
+// GET ALL
 router.get("/", async (req, res) => {
 
   // products = await Product.find({

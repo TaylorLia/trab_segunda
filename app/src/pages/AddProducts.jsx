@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useEffect, useState } from "react";
 import styled from "styled-components";
 import {mobile} from "../responsive";
 import { login, saveProduct } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { userRequest } from "../requestMethods";
+import { useHistory } from "react-router";
+import axios from "axios";
 
 const Container = styled.div`
   width: 100vw;

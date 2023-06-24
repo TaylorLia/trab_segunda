@@ -1,6 +1,5 @@
 const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
+const { PrismaClient } = require("@prisma/client");
 const dotenv = require("dotenv");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
@@ -10,7 +9,6 @@ const orderRoute = require("./routes/order");
 const stripeRoute = require("./routes/stripe");
 const { PrismaClient } = require("@prisma/client");
 const cors = require("cors");
-
 dotenv.config();
 
 mongoose
@@ -19,6 +17,9 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+const prisma = new PrismaClient();
+
+const app = express();
 
   async function verificaConexaoPrisma() {
     const prisma = new PrismaClient();
