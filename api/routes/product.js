@@ -4,20 +4,44 @@ const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
+const { PrismaClient } = require("@prisma/client");
 
 const router = require("express").Router();
+
+const prisma = new PrismaClient();
 
 //CREATE
 
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  const newProduct = new Product(req.body);
 
-  try {
-    const savedProduct = await newProduct.save();
-    res.status(200).json(savedProduct);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  const {
+    nome,
+    descricao,
+    preco,
+    imagem,
+    categoria
+  } = req.body
+
+try {  
+  const produto = await prisma.produto.create({
+    data : {
+      nome,
+      descricao,
+      preco : parseFloat(preco),
+      imagem,
+      categoria
+    }
+  })
+
+  res.status(200).json(produto)
+
+} catch (error) {
+  console.log(error);
+  res.status(500).json(error)
+} finally {
+  await prisma.$disconnect()
+}
+
 });
 
 //UPDATE
