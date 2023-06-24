@@ -113,6 +113,7 @@ useEffect(() => console.log(JSON.stringify(produto)), [produto])
 
           <Input
             placeholder="Preço"
+            type="number"
             onChange={(e) => setProduto({...produto, preco : e.target.value})} 
             />
 
