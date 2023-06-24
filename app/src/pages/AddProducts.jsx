@@ -84,11 +84,6 @@ const AddProducts = () => {
   const handleClick = async() => {
     try {
       const res = await axios.post('localhost:5000/api/products', {
-    NOME       
-    DESCRICAO  
-    PRECO      
-    IMAGEM     
-    CATEGORIA
       })
     } catch (error) {
       console.log(error)
