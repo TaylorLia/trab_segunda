@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {mobile} from "../responsive";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { userRequest } from "../requestMethods";
+import { useHistory } from "react-router";
 
 const Container = styled.div`
   width: 100vw;
@@ -70,6 +72,22 @@ const Error = styled.span`
 `;
 
 const AddProducts = () => {
+  const [product, setProduct] = useState({
+    name : null,
+    desc : null,
+    price : null,
+    img : null,
+    cat : null
+  });
+
+  const handleClick = async() => {
+    try {
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
 
   return (
     <Container>
@@ -78,32 +96,33 @@ const AddProducts = () => {
         <Form>
           <Input 
             placeholder="Nome do produto"
-            // onChange={(e) => setUsername(e.target.value)} 
+             onChange={(e) => setProduct({...product, name : e.target.value})} 
           />
             
           <Input
             placeholder="Descrição do produto"
-            // onChange={(e) => setPassword(e.target.value)} 
+              onChange={(e) => setProduct({...product, desc : e.target.value})} 
           />
 
           <Input
             placeholder="Preço"
-            // onChange={(e) => setPassword(e.target.value)} 
+            type="number"
+             onChange={(e) => setProduct({...product, price : e.target.value})} 
           />
 
           <Input
             placeholder="Url da imagem"
-            // onChange={(e) => setPassword(e.target.value)} 
+             onChange={(e) => setProduct({...product, img : e.target.value})} 
           />
-          <Button disabled={false}>
-            LOGIN
+
+          <Input
+            placeholder="Categoria do produto"
+            onChange={(e) => setProduct({...product, cat : e.target.value})} 
+          />
+          <Button disabled={false} onClick={handleClick}>
+            CADASTRAR
           </Button>
         </Form>
-        <Link_a>
-          <Link to="/register">
-            Crie uma conta
-          </Link>
-        </Link_a>
       </Wrapper>
     </Container>
   );
