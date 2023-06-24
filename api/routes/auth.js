@@ -7,25 +7,31 @@ const prisma = new PrismaClient();
 
 // REGISTER
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
-
+  const { username, email, password , nome, cpf, endereco, bairro, cidade, uf, cep, fone  } = req.body;
   try {
-    const encryptedPassword = CryptoJS.AES.encrypt(
-      password,
-      process.env.PASS_SEC
-    ).toString();
-
-    const newUser = await prisma.user.create({
+    const newUser = await prisma.usuario.create({
       data: {
-        username,
-        email,
-        password: encryptedPassword,
+        USUARIO : username,
+        SENHA : CryptoJS.AES.encrypt(
+          req.body.password,
+          process.env.PASS_SEC
+        ).toString(),
+        EMAIL : email,
+        NOME : nome,
+        BAIRRO : bairro,
+        CEP : cep,
+        CIDADE : cidade,
+        UF : uf,
+        ENDERECO : endereco,
+        FONE : fone,
+        CPF : cpf
       },
     });
 
     res.status(201).json(newUser);
   } catch (err) {
-    res.status(500).json(err);
+    console.log(err);
+    res.status(500).json({message : err});
   }
 });
 
