@@ -49,10 +49,6 @@ try {
   await prisma.$disconnect();
 }
 
-
-
-  
-
 });
 
 //LOGIN
