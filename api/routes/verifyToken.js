@@ -1,4 +1,7 @@
 const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.token;
@@ -19,7 +22,7 @@ const verifyTokenAndAuthorization = (req, res, next) => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
     } else {
-      res.status(403).json("You are not alowed to do that!");
+      res.status(403).json("Não permitido");
     }
   });
 };
@@ -29,7 +32,7 @@ const verifyTokenAndAdmin = (req, res, next) => {
     if (req.user.isAdmin) {
       next();
     } else {
-      res.status(403).json("You are not alowed to do that!");
+      res.status(403).json("Não pode");
     }
   });
 };

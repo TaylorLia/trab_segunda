@@ -1,78 +1,114 @@
-const Product = require("../models/Product");
+const { PrismaClient } = require("@prisma/client");
 const {
   verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
 
 const router = require("express").Router();
 
+const prisma = new PrismaClient();
+
 //CREATE
-
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  const newProduct = new Product(req.body);
 
-  try {
-    const savedProduct = await newProduct.save();
-    res.status(200).json(savedProduct);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  const {
+    nome,
+    descricao,
+    preco,
+    imagem,
+    categoria
+  } = req.body
+
+try {  
+  const produto = await prisma.produto.create({
+    data : {
+      nome,
+      descricao,
+      preco : parseFloat(preco),
+      imagem,
+      categoria
+    }
+  })
+
+  res.status(200).json(produto)
+
+} catch (error) {
+  console.log(error);
+  res.status(500).json(error)
+} finally {
+  await prisma.$disconnect()
+}
+
 });
 
-//UPDATE
+// UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { NOME, DESCRICAO, PRECO, IMAGEM, CATEGORIA } = req.body;
+
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
+    const updatedProduct = await prisma.produto.update({
+      where: {
+        id,
       },
-      { new: true }
-    );
+      data: {
+        NOME,
+        DESCRICAO,
+        PRECO,
+        IMAGEM,
+        CATEGORIA,
+      },
+    });
+
     res.status(200).json(updatedProduct);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//DELETE
+// DELETE
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+  const { id } = req.params;
+
   try {
-    await Product.findByIdAndDelete(req.params.id);
+    await prisma.produto.delete({
+      where: {
+        id,
+      },
+    });
+
     res.status(200).json("Product has been deleted...");
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//GET PRODUCT
-router.get("/find/:id", async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    res.status(200).json(product);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//GET ALL PRODUCTS
+// GET ALL
 router.get("/", async (req, res) => {
-  const qNew = req.query.new;
+
+  // products = await Product.find({
+  //   categories: {
+  //     $in: [qCategory],
+  //   },
+  // });
+
+  
   const qCategory = req.query.category;
+
   try {
     let products;
-
-    if (qNew) {
-      products = await Product.find().sort({ createdAt: -1 }).limit(1);
-    } else if (qCategory) {
-      products = await Product.find({
-        categories: {
-          $in: [qCategory],
-        },
-      });
+     if (qCategory) {
+      products = await prisma.produto.findMany({
+        where : {
+          categoria : qCategory
+        }
+      })
     } else {
-      products = await Product.find();
+      products = await prisma.produto.findMany()
     }
 
     res.status(200).json(products);

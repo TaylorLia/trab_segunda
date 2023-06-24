@@ -91,24 +91,6 @@ const ProductList = () => {
         <Span>{cat.toUpperCase()}</Span> 
       </Title>
       <FilterContainer>
-        <Filter>
-          <FilterText>Filtros:</FilterText>
-          <Select name="color" onChange={handleFilters}>
-            <Option disabled>
-              Color
-            </Option>
-            <Option>black</Option>
-            <Option>blue</Option>
-          </Select>
-        </Filter>
-        <Filter>
-          <FilterText>Ordenação:</FilterText>
-          <Select onChange={(e) => setSort(e.target.value)}>
-            <Option value="newest">Novos</Option>
-            <Option value="asc">Preço (asc)</Option>
-            <Option value="desc">Preço (desc)</Option>
-          </Select>
-        </Filter>
       </FilterContainer>
       <Products cat={cat} filters={filters} sort={sort} />
       <Newsletter />

@@ -1,24 +1,38 @@
-const mongoose = require("mongoose");
+const { PrismaClient } = require("@prisma/client");
 
-const OrderSchema = new mongoose.Schema(
-  {
-    userId: { type: String, required: true },
-    products: [
-      {
-        productId: {
-          type: String,
+const prisma = new PrismaClient();
+
+module.exports = {
+  createOrder: async (userId, products, amount, address, status = "pending") => {
+    const order = await prisma.order.create({
+      data: {
+        userId,
+        products: {
+          create: products.map((product) => ({
+            productId: product.productId,
+            quantity: product.quantity,
+          })),
         },
-        quantity: {
-          type: Number,
-          default: 1,
-        },
+        amount,
+        address,
+        status,
       },
-    ],
-    amount: { type: Number, required: true },
-    address: { type: Object, required: true },
-    status: { type: String, default: "pending" },
-  },
-  { timestamps: true }
-);
+    });
 
-module.exports = mongoose.model("Order", OrderSchema);
+    return order;
+  },
+
+  getOrderById: async (orderId) => {
+    const order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+      include: {
+        products: true,
+      },
+    });
+
+    return order;
+  },
+};
+

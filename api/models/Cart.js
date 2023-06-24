@@ -1,21 +1,40 @@
-const mongoose = require("mongoose");
+const { PrismaClient } = require("@prisma/client");
 
-const CartSchema = new mongoose.Schema(
-  {
-    userId: { type: String, required: true },
-    products: [
-      {
-        productId: {
-          type: String,
-        },
-        quantity: {
-          type: Number,
-          default: 1,
-        },
+const prisma = new PrismaClient();
+
+module.exports = {
+  createCart: async (userId) => {
+    const cart = await prisma.cart.create({
+      data: {
+        userId,
       },
-    ],
-  },
-  { timestamps: true }
-);
+    });
 
-module.exports = mongoose.model("Cart", CartSchema);
+    return cart;
+  },
+  
+  addToCart: async (cartId, productId, quantity = 1) => {
+    const cartItem = await prisma.cartItem.create({
+      data: {
+        cartId,
+        productId,
+        quantity,
+      },
+    });
+
+    return cartItem;
+  },
+  
+  getCartById: async (cartId) => {
+    const cart = await prisma.cart.findUnique({
+      where: {
+        id: cartId,
+      },
+      include: {
+        cartItems: true,
+      },
+    });
+
+    return cart;
+  },
+};

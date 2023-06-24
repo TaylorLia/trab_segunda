@@ -1,6 +1,5 @@
 const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
+const { PrismaClient } = require("@prisma/client");
 const dotenv = require("dotenv");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
@@ -8,16 +7,36 @@ const productRoute = require("./routes/product");
 const cartRoute = require("./routes/cart");
 const orderRoute = require("./routes/order");
 const stripeRoute = require("./routes/stripe");
+const { PrismaClient } = require("@prisma/client");
 const cors = require("cors");
-
 dotenv.config();
 
 mongoose
   .connect(process.env.MONGO_URL)
-  .then(() => console.log("DB Connection Successfull!"))
+  .then(() => console.log("MONGOOSE CONECTADO!"))
   .catch((err) => {
     console.log(err);
   });
+const prisma = new PrismaClient();
+
+const app = express();
+
+  async function verificaConexaoPrisma() {
+    const prisma = new PrismaClient();
+
+    try {
+      // Tenta realizar uma consulta simples para verificar a conexão
+      await prisma.$queryRaw`SELECT 1`;
+      console.log('Conexão com o Prisma estabelecida com sucesso!');
+    } catch (error) {
+      console.error('Erro ao conectar com o Prisma:', error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+
+  verificaConexaoPrisma()
+
 
 app.use(cors());
 app.use(express.json());

@@ -1,16 +1,28 @@
-const mongoose = require("mongoose");
+const { PrismaClient } = require("@prisma/client");
 
-const UserSchema = new mongoose.Schema(
-  {
-    username: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
+const prisma = new PrismaClient();
+
+module.exports = {
+  createUser: async (username, email, password, isAdmin = false) => {
+    const user = await prisma.user.create({
+      data: {
+        username,
+        email,
+        password,
+        isAdmin,
+      },
+    });
+
+    return user;
   },
-  { timestamps: true }
-);
 
-module.exports = mongoose.model("User", UserSchema);
+  getUserById: async (userId) => {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    return user;
+  },
+};
