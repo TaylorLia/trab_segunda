@@ -55,6 +55,8 @@ const Center = styled.div`
 const Logo = styled.h1`
   font-weight: bold;
   ${mobile({ fontSize: "24px" })}
+  cursor: pointer;
+  color:white;
 `;
 const Right = styled.div`
   flex: 1;
@@ -93,7 +95,11 @@ const Navbar = () => {
         {user?.is_adm && <Link to="/listorders"><MenuItem>Listagem de pedidos</MenuItem></Link> }
         </Left>
         <Center>
-          <Logo>PENAPP!</Logo>
+          <Logo>
+            <Link to="/">
+              PENAPP!
+            </Link>
+          </Logo>
         </Center>
         <Right>
         {!user && <Link to="/login">
